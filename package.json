@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -14,6 +15,8 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@vue/cli-plugin-babel": "~4.5.19",
     "@vue/cli-plugin-router": "~4.5.19",
     "@vue/cli-plugin-typescript": "~4.5.19",
@@ -25,7 +28,8 @@
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "prettier": "^2.7.1",
-    "typescript": "~4.1.5"
+    "typescript": "~4.1.5",
+    "husky": "^8.0.0"
   },
   "config": {
     "commitizen": {
