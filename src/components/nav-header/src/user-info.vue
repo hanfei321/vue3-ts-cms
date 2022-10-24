@@ -1,0 +1,56 @@
+<template>
+  <el-dropdown>
+    <span class='el-dropdown-link'>
+       <span class='el-avatr'>
+      <el-avatar :size='35' shape='square'
+                 src='https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80' />
+        </span>
+          <span>{{ username }}</span>
+        </span>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item :icon='User'>个人中心</el-dropdown-item>
+        <el-dropdown-item :icon='Paperclip'>
+          项目地址
+        </el-dropdown-item>
+        <el-dropdown-item :icon='CircleClose'>退出登录</el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+</template>
+
+<script lang='ts'>
+import { defineComponent, computed } from 'vue'
+import { useStore } from 'vuex'
+import { User, Paperclip, CircleClose } from '@element-plus/icons-vue'
+
+export default defineComponent({
+  name: 'user-info',
+  setup() {
+    const store = useStore()
+    const username = computed(() => store.state.Login.userInfo.name)
+    return {
+      username,
+      User,
+      Paperclip,
+      CircleClose
+    }
+  }
+})
+</script>
+
+<style scoped>
+.el-dropdown-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.el-avatr {
+  margin: 10px;
+  box-shadow: 0 6px 10px 0 #00000024;
+  height: 35px;
+  border-radius: 3px;
+
+}
+</style>
