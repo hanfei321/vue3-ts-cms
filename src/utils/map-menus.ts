@@ -69,4 +69,20 @@ export function pathmaptomenu(
   }
 }
 
+// 拿到用户菜单下所有权限
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permissions: string[] = []
+  const _recurseGetPermission = (menus: any[]) => {
+    for (const item of menus) {
+      if (item.type === 1 || item.type === 2) {
+        _recurseGetPermission(item.children ?? [])
+      } else if (item.type === 3) {
+        permissions.push(item.permission)
+      }
+    }
+  }
+  _recurseGetPermission(userMenus)
+  return permissions
+}
+
 export { fristmenu }

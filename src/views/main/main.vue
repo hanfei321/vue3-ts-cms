@@ -61,6 +61,7 @@ export default defineComponent({
 .page-content {
   height: calc(100% - 48px);
 
+
 }
 
 
@@ -103,11 +104,6 @@ export default defineComponent({
   color: #333;
   text-align: center;
   background-color: #e6eef0;
-}
-
-.el-header {
-  //box-shadow: 0 0px 0px 0 #00000024;
-  z-index: 5;
 }
 
 </style>

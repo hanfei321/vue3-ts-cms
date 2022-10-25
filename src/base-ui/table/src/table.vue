@@ -8,11 +8,12 @@
         </div>
       </slot>
     </div>
-    <el-table :data='listData' border style='width: 100%' class='table-user' @selection-change='selectionchange'>
+    <el-table :data='listData' border style='width: 100%' class='table-user' @selection-change='selectionchange'
+              v-bind='childrenProps'>
       <el-table-column v-if='showSelectColumn' type='selection' width='60' align='center'></el-table-column>
       <el-table-column v-if='showIndexColumn' type='index' width='80px' align='center' label='序号'></el-table-column>
       <template v-for='item in propList' :key='item.prop'>
-        <el-table-column v-bind='item' align='center'>
+        <el-table-column v-bind='item' align='center' show-overflow-tooltip>
           <template #default='scope'>
             <slot :name='item.slotname' :row='scope.row'>
               {{ scope.row[item.prop] }}
@@ -24,14 +25,12 @@
     <div class='table-footer'>
       <slot name='tableFooter'>
         <el-pagination
-          v-model:currentPage='currentPage4'
-          v-model:page-size='pageSize4'
-          :page-sizes='[100, 200, 300, 400]'
-          :small='small'
-          :disabled='disabled'
-          :background='background'
+          v-model:currentPage='page.pageCount'
+          v-model:page-size='page.pageSize'
+          :page-sizes='[10, 20, 30,]'
+          :background='true'
           layout='total, sizes, prev, pager, next, jumper'
-          :total='400'
+          :total='listCount'
           @size-change='handleSizeChange'
           @current-change='handleCurrentChange'
         />
@@ -66,17 +65,43 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       defulat: false
+    },
+    listCount: {
+      type: Number,
+      defulat: 0
+    },
+    page: {
+      type: Object,
+      defulat: () => ({ pageCount: 0, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      defulat: () => {
+      }
+    },
+    showFooter: {
+      type: Boolean,
+      defulat: true
     }
   },
-  emit: ['selectionCH'],
+  emits: ['selectionCH', 'update:page'],
   setup(props, { emit }) {
     const store = useStore()
     const selectionchange = (value: any) => {
       emit('selectionCH', value)
     }
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
+    }
+    const handleCurrentChange = (pageCount: number) => {
+      emit('update:page', { ...props.page, pageCount })
+    }
+
 
     return {
-      selectionchange
+      selectionchange,
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 })
@@ -106,7 +131,7 @@ export default defineComponent({
 
   .el-pagination {
     text-align: right;
-    margin-left: 550px;
+    margin-left: 500px;
   }
 }
 </style>

@@ -1,29 +1,32 @@
 <template>
   <div class='page-content'>
     <div class='table-list'>
-      <Table :list-data='userList' v-bind='contentTableConfig'>
+      <Table :list-data='userList' :list-count='listCount' v-bind='contentTableConfig' v-model:page='pageInfo'>
 
         <!--header中的插槽-->
         <template #headerHanler>
-          <el-button class='search-icon'>新建用户</el-button>
+          <el-button v-if='isCreate' class='search-icon'>新建用户</el-button>
         </template>
         <!--        列中插槽-->
-        <template #status='scope'>
-          <el-button plain :type='scope.row.enable ? "success":"warning"' size='small'>
-            {{ scope.row.enable ? '启用' : '禁用' }}
-          </el-button>
-        </template>
         <template #createAt='scope'>
           <strong>{{ formatUtcString(scope.row.createAt) }}</strong>
         </template>
         <template #updateAt='scope'>
           <strong>{{ formatUtcString(scope.row.updateAt) }}</strong>
         </template>
-        <template #handler>
+        <template #handler='scope'>
           <div class='handler-btns'>
-            <el-button size='small' type='primary' text :icon='EditPen'>编辑</el-button>
-            <el-button size='small' type='primary' text :icon='Delete'>删除</el-button>
+            <el-button v-if='isUpdate' size='small' type='primary' text :icon='EditPen'>编辑</el-button>
+            <el-button v-if='isDelete' size='small' type='primary' text :icon='Delete'
+                       @click='handlDeleteClick(scope.row)'>删除
+            </el-button>
           </div>
+        </template>
+
+        <template v-for='item in otherPropSlots' :key='item.props' #[item.slotname]='scope'>
+          <template v-if='item.slotname'>
+            <slot :name='item.slotname' :row='scope.row'></slot>
+          </template>
         </template>
       </Table>
     </div>
@@ -32,12 +35,13 @@
 </template>
 
 <script lang='ts'>
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import Table from '@/base-ui/table'
 
 import { formatUtcString } from '@/utils/date-format'
 import { EditPen, Delete } from '@element-plus/icons-vue'
 import { useStore } from 'vuex'
+import { usePermission } from '@/hooks/use-permission'
 
 export default defineComponent({
   name: 'page-content',
@@ -54,22 +58,64 @@ export default defineComponent({
   components: {
     Table
   },
-  setup(prop) {
+  setup(props) {
     const store = useStore()
-    store.dispatch('system/getPageLisitAction', {
-      pageName: prop.pagename,
-      queryInfo: {
-        offset: 0,
-        size: 10
+    const isCreate = usePermission(props.pagename ?? '', 'create')
+    const isUpdate = usePermission(props.pagename ?? '', 'update')
+    const isDelete = usePermission(props.pagename ?? '', 'delete')
+    const isQuery = usePermission(props.pagename ?? '', 'query')
+
+    // 1,双向绑定pageInfo
+    const pageInfo = ref({ pageCount: 1, pageSize: 10 })
+    watch(pageInfo, () => getPageContent())
+
+    // 2，发送网络请求
+    const getPageContent = (queryInfo: any = {}) => {
+      console.log(queryInfo)
+      if (!isQuery) return
+      store.dispatch('system/getPageLisitAction', {
+        pageName: props.pagename,
+        queryInfo: {
+          offset: (pageInfo.value.pageCount - 1) * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
+          ...queryInfo
+        }
+      })
+    }
+    getPageContent()
+    // 3，从vux中获取数据
+    const userList = computed(() => store.getters[`system/pageListData`](props.pagename))
+    const listCount = computed(() => store.getters[`system/pageListCount`](props.pagename))
+    // 4,获取其他的动态插槽名称
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slotname === 'createAt') return false
+        if (item.slotname === 'updateAt') return false
+        if (item.slotname === 'handler') return false
+        return true
       }
-    })
-    const userList = computed(() => store.getters[`system/pageListData`](prop.pagename))
+    )
+    //删除、新建
+    const handlDeleteClick = (item: any) => {
+      store.dispatch(`system/deletePageDataAction`, {
+        pageName: props.pagename,
+        id: item.id
+      })
+    }
 
     return {
       userList,
       formatUtcString,
       EditPen,
-      Delete
+      Delete,
+      getPageContent,
+      listCount,
+      pageInfo,
+      otherPropSlots,
+      isCreate,
+      isUpdate,
+      isDelete,
+      handlDeleteClick
     }
   }
 })

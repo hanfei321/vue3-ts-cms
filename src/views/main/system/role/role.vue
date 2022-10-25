@@ -1,16 +1,18 @@
 <template>
   <div class='role'>
-    <page-search :SearchFormConfig='SearchFormConfig'></page-search>
-    <pageContent :content-table-config='contentTableConfig' pagename='role'></pageContent>
+    <page-search :SearchFormConfig='SearchFormConfig' @resetBtnClick='headelResetBtnClick'
+                 @queryBtnClick='headelQueryBtnClick'></page-search>
+    <pageContent :content-table-config='contentTableConfig' pagename='role' ref='pageContentRef'></pageContent>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import pageSearch from '@/components/page-search'
 import pageContent from '@/components/page-content'
 import { contentTableConfig } from './config/table.config'
 import { SearchFormConfig } from './config/search.config'
+import { usePageSearch } from '@/hooks/use-page-search'
 
 
 export default defineComponent({
@@ -21,9 +23,14 @@ export default defineComponent({
     pageSearch
   },
   setup() {
+    const [pageContentRef, headelResetBtnClick, headelQueryBtnClick] = usePageSearch()
     return {
       SearchFormConfig,
-      contentTableConfig
+      contentTableConfig,
+      headelResetBtnClick,
+      headelQueryBtnClick,
+      pageContentRef
+
     }
   }
 })

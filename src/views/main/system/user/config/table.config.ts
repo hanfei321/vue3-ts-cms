@@ -20,5 +20,6 @@ export const contentTableConfig = {
   ],
   showIndexColumn: true,
   showselectcolumn: true,
-  title: '用户列表'
+  title: '用户列表',
+  showFooter: true
 }

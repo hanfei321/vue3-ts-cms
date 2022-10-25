@@ -6,8 +6,8 @@
       </template>
       <template #footer>
         <div class='user-footer'>
-          <el-button :icon='Search' class='search-icon'>搜索</el-button>
-          <el-button :icon='RefreshRight' class='refresh-icon'>重置</el-button>
+          <el-button :icon='Search' class='search-icon' @click='handleQueryClick'>搜索</el-button>
+          <el-button :icon='RefreshRight' class='refresh-icon' @click='handleResetClick'>重置</el-button>
         </div>
       </template>
     </Hyfrom>
@@ -31,19 +31,30 @@ export default defineComponent({
   components: {
     Hyfrom
   },
-  setup() {
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      sport: '',
-      createTime: ''
-    })
+  emits: ['resetBtnClick', 'queryBtnClick'],
+  setup(prop, { emit }) {
+    const formItems = prop.SearchFormConfig?.fromItem ?? []
+    const formQriginData: any = {}
+    for (const item of formItems) {
+      formQriginData[item.field] = ''
+    }
+    const formData = ref(formQriginData)
+    const handleResetClick = () => {
+      formData.value = formQriginData
+      emit('resetBtnClick')
+    }
+    // 优化三
+    const handleQueryClick = () => {
+      console.log('搜索点击')
+      emit('queryBtnClick', formData.value)
 
+    }
     return {
       formData,
       Search,
-      RefreshRight
+      RefreshRight,
+      handleResetClick,
+      handleQueryClick
     }
   }
 })
