@@ -15,3 +15,17 @@ export function PageDeleteData(url: string) {
     url: url
   })
 }
+
+export function PageNewData(url: string, newData: any) {
+  return HYRequest.post<any>({
+    url: url,
+    data: newData
+  })
+}
+
+export function PageEditData(url: string, editData: any) {
+  return HYRequest.patch<any>({
+    url: url,
+    data: editData
+  })
+}

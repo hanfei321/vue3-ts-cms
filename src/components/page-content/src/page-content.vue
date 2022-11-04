@@ -5,7 +5,7 @@
 
         <!--header中的插槽-->
         <template #headerHanler>
-          <el-button v-if='isCreate' class='search-icon'>新建用户</el-button>
+          <el-button v-if='isCreate' class='search-icon' @click='headerNewClick'>{{ newBtn }}</el-button>
         </template>
         <!--        列中插槽-->
         <template #createAt='scope'>
@@ -16,7 +16,9 @@
         </template>
         <template #handler='scope'>
           <div class='handler-btns'>
-            <el-button v-if='isUpdate' size='small' type='primary' text :icon='EditPen'>编辑</el-button>
+            <el-button v-if='isUpdate' size='small' type='primary' text :icon='EditPen'
+                       @click='headerEditClick(scope.row)'>编辑
+            </el-button>
             <el-button v-if='isDelete' size='small' type='primary' text :icon='Delete'
                        @click='handlDeleteClick(scope.row)'>删除
             </el-button>
@@ -30,7 +32,22 @@
         </template>
       </Table>
     </div>
-
+    <el-dialog
+      v-model='centerDialogVisible'
+      title='警告'
+      width='20%'
+      align-center
+    >
+      <span>你确定要删除这条数据嘛？</span>
+      <template #footer>
+      <span class='dialog-footer'>
+        <el-button @click='centerDialogVisible = false'>取消</el-button>
+        <el-button type='primary' @click='handelDeletDialog'>
+          确定
+        </el-button>
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -53,12 +70,17 @@ export default defineComponent({
     pagename: {
       type: String,
       reuqired: true
+    },
+    newBtn: {
+      type: String,
+      default: '新建'
     }
   },
   components: {
     Table
   },
-  setup(props) {
+  emits: ['headerNewData', 'headerEditData'],
+  setup(props, { emit }) {
     const store = useStore()
     const isCreate = usePermission(props.pagename ?? '', 'create')
     const isUpdate = usePermission(props.pagename ?? '', 'update')
@@ -96,11 +118,27 @@ export default defineComponent({
       }
     )
     //删除、新建
+    const centerDialogVisible = ref(false)
+    const deleteItemId = ref()
     const handlDeleteClick = (item: any) => {
+      centerDialogVisible.value = true
+      deleteItemId.value = item.id
+
+    }
+    const handelDeletDialog = () => {
+      centerDialogVisible.value = false
       store.dispatch(`system/deletePageDataAction`, {
         pageName: props.pagename,
-        id: item.id
+        id: deleteItemId.value
       })
+    }
+    const headerNewClick = () => {
+      console.log('新建')
+      emit('headerNewData')
+
+    }
+    const headerEditClick = (item: any) => {
+      emit('headerEditData', item)
     }
 
     return {
@@ -115,7 +153,11 @@ export default defineComponent({
       isCreate,
       isUpdate,
       isDelete,
-      handlDeleteClick
+      handlDeleteClick,
+      headerNewClick,
+      headerEditClick,
+      centerDialogVisible,
+      handelDeletDialog
     }
   }
 })

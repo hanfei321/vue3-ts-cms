@@ -31,7 +31,7 @@ export const SearchFormConfig: IForm = {
       placeholder: '请输入现价格'
     },
     {
-      field: 'createTime',
+      field: 'createAt',
       type: 'datepicker',
       label: '创建时间',
       placeholder: '请输入时间',

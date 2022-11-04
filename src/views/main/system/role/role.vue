@@ -2,7 +2,8 @@
   <div class='role'>
     <page-search :SearchFormConfig='SearchFormConfig' @resetBtnClick='headelResetBtnClick'
                  @queryBtnClick='headelQueryBtnClick'></page-search>
-    <pageContent :content-table-config='contentTableConfig' pagename='role' ref='pageContentRef'></pageContent>
+    <pageContent :content-table-config='contentTableConfig' pagename='role' ref='pageContentRef'
+                 :new-btn='newBtn'></pageContent>
   </div>
 </template>
 
@@ -24,12 +25,14 @@ export default defineComponent({
   },
   setup() {
     const [pageContentRef, headelResetBtnClick, headelQueryBtnClick] = usePageSearch()
+    const newBtn = '新建角色'
     return {
       SearchFormConfig,
       contentTableConfig,
       headelResetBtnClick,
       headelQueryBtnClick,
-      pageContentRef
+      pageContentRef,
+      newBtn
 
     }
   }

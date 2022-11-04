@@ -23,7 +23,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 //elment-puls的局部引用
-registerApp(app)
+// registerApp(app)
 //进入main页面后重新加载数据到vuex
 setupStore()
 

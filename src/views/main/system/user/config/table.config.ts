@@ -19,7 +19,7 @@ export const contentTableConfig = {
     { label: '操作', minWidth: '110', slotname: 'handler' }
   ],
   showIndexColumn: true,
-  showselectcolumn: true,
+  showSelectColumn: true,
   title: '用户列表',
   showFooter: true
 }

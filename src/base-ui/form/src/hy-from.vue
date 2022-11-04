@@ -3,13 +3,14 @@
     <div class='header'>
       <slot name='header'></slot>
     </div>
-    <el-form :label-width='stylewidth'>
+    <el-form :label-width='stylewidth' :rules='rules' :model='modelValue'>
       <el-row>
         <template v-for='item in fromItem' :key='item.label'>
           <el-col v-bind='colLayout'>
             <el-form-item
+              v-if='!item.isHidden'
               :label='item.label'
-              :style='Itemstyle'>
+              :style='Itemstyle' :prop='item.field'>
               <template v-if='item.type === "input"|| item.type === "password"'>
                 <el-input :placeholder='item.placeholder'
                           :show-password='item.type === "password"'
@@ -50,7 +51,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, reactive, ref, watch } from 'vue'
 import { IFormItem } from '@/base-ui/form/type'
 
 export default defineComponent({
@@ -82,6 +83,11 @@ export default defineComponent({
         sm: 24,
         xs: 24
       })
+    },
+    rules: {
+      type: Object,
+      default: () => {
+      }
     }
   },
   emits: ['update:modelValue'],
@@ -100,6 +106,7 @@ export default defineComponent({
     const handleValueChange = (value: any, field: string) => {
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
+    console.log(props.modelValue['name'])
 
     return {
       handleValueChange
