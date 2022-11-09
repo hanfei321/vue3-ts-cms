@@ -13,7 +13,7 @@
         <el-dropdown-item :icon='Paperclip'>
           项目地址
         </el-dropdown-item>
-        <el-dropdown-item :icon='CircleClose'>退出登录</el-dropdown-item>
+        <el-dropdown-item :icon='CircleClose' @click='exitClick'>退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>
   </el-dropdown>
@@ -23,17 +23,25 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { User, Paperclip, CircleClose } from '@element-plus/icons-vue'
+import LocalCache from '@/utils/cache'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'user-info',
   setup() {
     const store = useStore()
+    const router = useRouter()
     const username = computed(() => store.state.Login.userInfo.name)
+    const exitClick = () => {
+      LocalCache.deleteCache('token')
+      router.push('/main')
+    }
     return {
       username,
       User,
       Paperclip,
-      CircleClose
+      CircleClose,
+      exitClick
     }
   }
 })

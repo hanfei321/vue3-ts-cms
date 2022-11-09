@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { IRootState } from '@/store/type'
 import Login from './login/login'
 import system from '@/store/main/system/system'
+import Dashboard from './analysis/dashboard'
 import * as url from 'url'
 import { getPageListData } from '@/network/main/system/system'
 
@@ -10,7 +11,8 @@ const store = createStore<IRootState>({
     name: 'coderwhy',
     age: 18,
     entireDepartment: [],
-    entireRole: []
+    entireRole: [],
+    entireMenu: []
   },
   mutations: {
     changeDepData(state, depList) {
@@ -18,6 +20,9 @@ const store = createStore<IRootState>({
     },
     changeRoleData(state, roleList) {
       state.entireRole = roleList
+    },
+    changeMenuData(state, menuList) {
+      state.entireMenu = menuList
     }
   },
   actions: {
@@ -33,13 +38,19 @@ const store = createStore<IRootState>({
         size: 1000
       })
       const { list: roleList } = pageRoleResult.data
+
+      const menusResult = await getPageListData('/menu/list', {})
+      const { list: menuList } = menusResult.data
+
       commit('changeDepData', depList)
       commit('changeRoleData', roleList)
+      commit('changeMenuData', menuList)
     }
   },
   modules: {
     Login,
-    system
+    system,
+    Dashboard
   }
 })
 

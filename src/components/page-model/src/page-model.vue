@@ -3,6 +3,7 @@
     <el-dialog v-model='dialogVisible' :title='titleHeard' width='30%' center destroy-on-close>
     <span>
       <HyFrom v-bind='modelFormConfig' v-model='formDate' :rules='rules'></HyFrom>
+      <slot></slot>
     </span>
       <template #footer>
       <span class='dialog-footer'>
@@ -33,6 +34,10 @@ export default defineComponent({
       default: () => {
       }
     },
+    overInfo: {
+      type: Object,
+      default: () => ({})
+    },
     pageName: {
       type: String,
       required: true
@@ -62,14 +67,14 @@ export default defineComponent({
         //编辑
         store.dispatch('system/EditPageDataAction', {
           pageName: props.pageName,
-          editData: { ...formDate.value },
+          editData: { ...formDate.value, ...props.overInfo },
           id: props.defaultdata.id
         })
       } else {
         //新建
         store.dispatch('system/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formDate.value }
+          newData: { ...formDate.value, ...props.overInfo }
         })
       }
 
