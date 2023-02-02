@@ -53,6 +53,14 @@
           </el-menu-item>
         </teleport>
       </template>
+      <el-sub-menu>
+        <template #title>
+            <el-icon><location /></el-icon>
+            <span>Navigator One</span>
+          </template>
+        <el-menu-item>123</el-menu-item>
+      </el-sub-menu>
+
     </el-menu>
   </div>
 </template>

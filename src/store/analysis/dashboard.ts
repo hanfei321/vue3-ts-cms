@@ -5,13 +5,15 @@ import {
   addressGoodsSale,
   categoryGoodsFavor,
   categoryGoodsSale,
-  getcategoryGoodsCount
+  getcategoryGoodsCount,
+  getAmountList
 } from '@/network/dashboard/dashboard'
 
 const Dashboard: Module<IDashboardState, IRootState> = {
   namespaced: true,
   state() {
     return {
+      topPanelDatas: [],
       categoryGoodsCount: [],
       categoryGoodsFavor: [],
       categoryGoodsSale: [],
@@ -20,6 +22,10 @@ const Dashboard: Module<IDashboardState, IRootState> = {
   },
   getters: {},
   mutations: {
+    changeTopPanelDatas(state, list: any[]) {
+      debugger
+      state.topPanelDatas = list
+    },
     changeCategoryCount(state, list: any[]) {
       state.categoryGoodsCount = list
     },
@@ -36,6 +42,9 @@ const Dashboard: Module<IDashboardState, IRootState> = {
   },
   actions: {
     async getDashboardDataAction({ commit }) {
+      const resultTopPanelDatas = await getAmountList()
+      commit('changeTopPanelDatas', resultTopPanelDatas.data)
+
       const categoryCountResult = await getcategoryGoodsCount()
       commit('changeCategoryCount', categoryCountResult.data)
 

@@ -45,7 +45,7 @@ export default defineComponent({
     const [pageContentRef, headelResetBtnClick, headelQueryBtnClick] = usePageSearch()
     const newBtn = '新建角色'
 
-    const [pageModelRef, defaultdata, headerNewData, headerEditData] = usePageModel()
+    const [pageModelRef, defaultdata, headerNewData, headerEditData] = usePageModel(undefined,undefined,'role','roleEdit')
     const store = useStore()
     const menu = computed(() => store.state.entireMenu)
 

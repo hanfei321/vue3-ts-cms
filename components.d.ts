@@ -45,6 +45,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
     LineEchart: typeof import('./src/components/page-echars/src/line-echart.vue')['default']
     MapEchart: typeof import('./src/components/page-echars/src/map-echart.vue')['default']

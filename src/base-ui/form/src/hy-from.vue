@@ -23,6 +23,7 @@
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"
                   class="demoInput"
+                  clearable
                 ></el-input>
                 <div class="underline"></div>
               </template>

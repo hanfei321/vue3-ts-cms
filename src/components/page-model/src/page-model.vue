@@ -46,7 +46,7 @@ export default defineComponent({
       type: Object,
       default: () => {
       }
-    }
+    },
   },
   components: {
     HyFrom
