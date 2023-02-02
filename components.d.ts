@@ -54,6 +54,7 @@ declare module '@vue/runtime-core' {
     PageModel: typeof import('./src/components/page-model/src/page-model.vue')['default']
     PageSearch: typeof import('./src/components/page-search/src/page-search.vue')['default']
     PieEchars: typeof import('./src/components/page-echars/src/pie-echars.vue')['default']
+    PorDoc: typeof import('./src/components/nav-header/src/por-doc.vue')['default']
     RoseEchart: typeof import('./src/components/page-echars/src/rose-echart.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

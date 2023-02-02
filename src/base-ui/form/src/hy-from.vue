@@ -1,42 +1,55 @@
 <template>
-  <div class='hy-from'>
-    <div class='header'>
-      <slot name='header'></slot>
+  <div class="hy-from">
+    <div class="header">
+      <slot name="header"></slot>
     </div>
-    <el-form :label-width='stylewidth' :rules='rules' :model='modelValue'>
+    <el-form :label-width="stylewidth" :rules="rules" :model="modelValue">
       <el-row>
-        <template v-for='item in fromItem' :key='item.label'>
-          <el-col v-bind='colLayout'>
+        <template v-for="item in fromItem" :key="item.label">
+          <el-col v-bind="colLayout">
             <el-form-item
-              v-if='!item.isHidden'
-              :label='item.label'
-              :style='Itemstyle' :prop='item.field'>
-              <template v-if='item.type === "input"|| item.type === "password"'>
-                <el-input :placeholder='item.placeholder'
-                          :show-password='item.type === "password"'
-                          v-bind='item.otherOptions'
-                          :model-value='modelValue[`${item.field}`]'
-                          @update:modelValue='handleValueChange($event,item.field)'
-                          class='demoInput'
+              v-if="!item.isHidden"
+              :label="item.label"
+              :style="Itemstyle"
+              :prop="item.field"
+            >
+              <template
+                v-if="item.type === 'input' || item.type === 'password'"
+              >
+                <el-input
+                  :placeholder="item.placeholder"
+                  :show-password="item.type === 'password'"
+                  v-bind="item.otherOptions"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                  class="demoInput"
                 ></el-input>
-                <div class='underline'></div>
+                <div class="underline"></div>
               </template>
-              <template v-else-if='item.type === "select"'>
-                <el-select :placeholder='item.placeholder' v-bind='item.otherOptions' style='width: 100%;'
-                           :model-value='modelValue[`${item.field}`]'
-                           @update:modelValue='handleValueChange($event,item.field)'>
-                  <el-option v-for='optionitem in item.option'
-                             :key='optionitem.value'
-                             :value='optionitem.value'>
+              <template v-else-if="item.type === 'select'">
+                <el-select
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                >
+                  <el-option
+                    v-for="optionitem in item.option"
+                    :key="optionitem.value"
+                    :value="optionitem.value"
+                  >
                     {{ optionitem.title }}
                   </el-option>
                 </el-select>
               </template>
-              <template v-else-if='item.type==="datepicker"'>
-                <el-date-picker style='width: 100%'
-                                v-bind='item.otherOptions'
-                                :model-value='modelValue[`${item.field}`]'
-                                @update:modelValue='handleValueChange($event,item.field)'>
+              <template v-else-if="item.type === 'datepicker'">
+                <el-date-picker
+                  style="width: 100%"
+                  v-bind="item.otherOptions"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                >
                 </el-date-picker>
               </template>
             </el-form-item>
@@ -44,13 +57,13 @@
         </template>
       </el-row>
     </el-form>
-    <div class='footer'>
-      <slot name='footer'></slot>
+    <div class="footer">
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { defineComponent, PropType, reactive, ref, watch } from 'vue'
 import { IFormItem } from '@/base-ui/form/type'
 
@@ -64,7 +77,6 @@ export default defineComponent({
     fromItem: {
       type: Array as PropType<IFormItem[]>,
       default: () => []
-
     },
     stylewidth: {
       type: String,
@@ -86,8 +98,7 @@ export default defineComponent({
     },
     rules: {
       type: Object,
-      default: () => {
-      }
+      default: () => {}
     }
   },
   emits: ['update:modelValue'],

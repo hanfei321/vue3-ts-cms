@@ -10,9 +10,10 @@
     <template #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item :icon='User'>个人中心</el-dropdown-item>
-        <el-dropdown-item :icon='Paperclip'>
+        <el-dropdown-item :icon='Paperclip' @click='winOpenClick'>
           项目地址
         </el-dropdown-item>
+        <el-dropdown-item :icon='Document' @click='docmentWinOpen'>项目文档</el-dropdown-item>
         <el-dropdown-item :icon='CircleClose' @click='exitClick'>退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -22,7 +23,7 @@
 <script lang='ts'>
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import { User, Paperclip, CircleClose } from '@element-plus/icons-vue'
+import { User, Paperclip, CircleClose, Document } from '@element-plus/icons-vue'
 import LocalCache from '@/utils/cache'
 import { useRouter } from 'vue-router'
 
@@ -36,12 +37,21 @@ export default defineComponent({
       LocalCache.deleteCache('token')
       router.push('/main')
     }
+    const winOpenClick = () => {
+      window.open('https://github.com/hanfei321/vue3-ts-cms.git')
+    }
+    const docmentWinOpen = () => {
+      window.open('/doc/proDoc.html')
+    }
     return {
       username,
       User,
       Paperclip,
       CircleClose,
-      exitClick
+      Document,
+      exitClick,
+      winOpenClick,
+      docmentWinOpen
     }
   }
 })

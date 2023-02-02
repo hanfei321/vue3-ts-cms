@@ -1,17 +1,17 @@
 <template>
-  <div class='login-account'>
-    <el-form label-width='55px' :rules='rules' :model='account' ref='formRef'>
-      <el-form-item label='账号' prop='name'>
-        <el-input v-model='account.name'></el-input>
+  <div class="login-account">
+    <el-form label-width="55px" :rules="rules" :model="account" ref="formRef">
+      <el-form-item label="账号" prop="name">
+        <el-input v-model="account.name"></el-input>
       </el-form-item>
-      <el-form-item label='密码' prop='password'>
-        <el-input v-model='account.password' show-password></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="account.password" show-password></el-input>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { reactive, ref } from 'vue'
 import { rules } from '@/views/login/config/account-config'
 import { defineComponent } from 'vue'
@@ -44,6 +44,7 @@ export default defineComponent({
             LocalCache.setCache('password', account.password)
           } else {
             //否则删除缓存
+
             LocalCache.deleteCache('name')
             LocalCache.deleteCache('password')
           }
@@ -64,6 +65,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
