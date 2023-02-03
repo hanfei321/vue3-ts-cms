@@ -53,6 +53,13 @@
                 >
                 </el-date-picker>
               </template>
+
+              <template v-else-if="item.type === 'switch'">
+                <el-switch
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                />
+              </template>
             </el-form-item>
           </el-col>
         </template>
